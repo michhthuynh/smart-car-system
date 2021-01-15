@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { Button, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap'
 import { FastField, Formik } from 'formik'
 import InputField from '../../custom-fields/inputField';
-import api from '../../utils/api';
 
 FormLogin.propTypes = {
-
+  onSubmit: PropTypes.func
 };
 
+FormLogin.defaultProps = {
+  onSubmit: null
+}
+
 function FormLogin(props) {
+  const { onSubmit } = props
   const initialValue = {
     username: '',
     password: '',
@@ -17,9 +21,9 @@ function FormLogin(props) {
   return (
     <Formik
       initialValues={initialValue}
-      onSubmit={async ({ username, password }) => {
-        const response = await api.post('/auth/login', { username, password })
-        console.log(response)
+      onSubmit={async values => {
+        if (!onSubmit) return
+        onSubmit(values)
       }}
     >
       { formikProps =>

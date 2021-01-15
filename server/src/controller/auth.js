@@ -52,7 +52,7 @@ module.exports.login = async (req, res) => {
   try {
     const user = await userModel.find({ username })
     if (user[0] === undefined) {
-      res.sendStatus(403)
+      res.sendStatus(400)
       return
     }
     const isCompare = await bcrypt.compare(password, user[0]['password'])
